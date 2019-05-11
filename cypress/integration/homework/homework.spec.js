@@ -51,6 +51,7 @@ describe('Starwars API', () => {
 			getANewHope().its('body').its('title').should('eq', 'A New Hope');
 		});
 		it('asserts that Chewbacca is a Wookiee', () => {
+			//Wookie comments
 			const getChewbacca = () => cy.request(chewbacca);
 			const getWookiee = () => cy.request(wookiee);
 			//*Assertions made with Chai*
