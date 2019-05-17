@@ -1,0 +1,106 @@
+1. Updating the selected store for a logged in customer : 
+This feature allows the logged in user to change the selected storefront, which allows the user to
+see the items available from that storefront.
+When the Select Store dropdown is selected, the application should reach out to the API via the
+/zip_codes/available_stores_and_pickups.json which pulls back a group of stores localized near the
+user's saved Zip code sourced via their saved address_id. 
+When the user selects a different store via the ChooseStore modal, the application POSTs a refresh
+auth token request and then makes a PATCH call to /cutomers/customer_id endpoint to update the
+user's store_id.
+If these requests are successful, the user should be redirected to a new store_id's shelves after
+making a GET request to the /shelves service/controller based on the previous PATCH request's
+response values.
+
+2. Bug or Bad Workflow:
+  Product filters:
+  a. When the user wants to filter the items they are viewing via a keyword, they are limited to 
+  a singular choice with a variety of different sub options that further narrows the scope of the
+  items that ae visible to the user. This means that the filters are using an "And" mindset when 
+  applying filters. I.E. The user wants to see Items that are Dog supplies AND Food Category AND 
+  Dry Food.
+  b. I wouldn't say there are "errors"... just a limited filter feature.
+  c. In order to "fix" the workflow, I would suggest that we allow the user to be able to select
+  multiple filter options. For instance if the user has a Dog and a Cat, they would be able to
+  filter for Pet Food that meets the needs for either a Dog OR a Cat... this would help the user
+  find multiple items they need without having to reset filters over and over again.
+  d. Firstly I would approach product or someone with direct user insight and ask if they could
+  share why the filter feature was designed this way, then I would research any analytics we 
+  would have to determine if there would be data to back up a possible feature request to
+  make the UX meet the potential needs of the user. At this point, if the data backed up the 
+  need for improvement to the feature, I would create a User Story describing the results
+  of the data spike and propose an improvement to the Filter feature by allowing the user to 
+  select multiple filter categories.
+  e. I would place this as a P4/S4. The reason for this placement is that technically, the
+  filter feature is not "broken" and is working as designed, BUT could use improvement if
+  there is data to back the improvements up. If the data proved otherwise, I would not create
+  the ticket.
+
+3. There are quite a few reasons this defect would arise. My first guess would be some kind of 
+XHR request error related to the update. Perhaps there are some server side rules that are in place
+to prevent the same phone number from being saved a second time within a period of time?
+Perhaps the user lost their auth token or cookie. I would look at the stack trace or logs in the console
+or the API/Micro service box to gain more insight as to what happened in order to determine the next 
+course of action. The answer would probably be in the response for the update request. The response 
+will most likely contain a response object containing how the API handled the request and possibly contain
+the reasons why it failed or was prevented. If the API did indeed prevent the user from updating the 
+phone number to an identical older value, the defect would request that this error messaging be 
+conveyed to the user via the UI or some validation that would prevent the user from saving the value
+with messaging letting them know why they are unable to save.
+
+
+SQL queries:
+  1. select * from interview.Stores where interview.stores.allowed_alcohol = true
+
+  2. select name from interview.Store_prices
+      inner join interview.products
+      on interview.store_prices.product_id = interview.products.id
+      where interview.store_prices.store_id = 1
+      order by interview.store_prices.price desc limit 2
+
+  3. select * from interview.products products
+      left join interview.store_prices prices
+      on products.id = prices.product_id
+      and prices.store_id = 2
+      where store_id is null
+
+  4. select name, SUM(qty)
+      from interview.products
+      full join interview.order_lines
+      on interview.products.id = interview.order_lines.product_id
+      where qty is not null
+      group by name
+      order by SUM(qty) desc limit 1
+
+  5. select * from interview.store_prices
+      inner join interview.order_lines
+      on interview.store_prices.product_id = interview.order_lines.product_id
+
+      update interview.order_lines
+      set line_total = (interview.order_lines.qty * interview.store_prices.price)
+      from interview.store_prices
+      where interview.order_lines.product_id = interview.store_prices.product_id
+
+
+
+
+
+1. If you chose to use a tool or language other than the recommended, briefly explain why.
+  I decided to use Cypress as it is the tool I am most familiar with. 
+  It also affords me the ability to quickly write automated tests that can be used to test APIs, 
+  Services, UIs, etc. I could write the automation using Ruby, or any other language, but Cypress
+  is just much faster to spin up.
+2. How do you debug a failed test in your test framework?
+  The Cypress test runner gives a large amount of insight while debugging failed tests and really 
+  teaches you how to write specs that dont need a large debugging effort.
+3. What do you believe are the most common causes for instability in UI automation?
+  I belive that one of the common causes for instability is the fact that a lot of automated 
+  suites are still using CSS selectors to target specific elements. Although this is a lot better 
+  than xpath, it is still flakey as front end changes will potentially break automated specs. 
+  Another reason is that tools like selenium are showing their age when used to test modern apps. 
+  They become bloated with unessecary waits and sleeps, and rely on the PageObject methodology. 
+  UI tests are also notorious for taking a long time to resolve.
+4. How do you make your tests consistent and easy to debug?
+  I prefer to make my tests as small as possible. This makes it very easy to debug as the tests do 
+  a very limited number of things. I always try to make my specs as easy as possible to read while 
+  also making use of comments to assits others. Writing the tests in a way that they can run 
+  without relying on other tests is also a great way to make them consistant and easy to debug.

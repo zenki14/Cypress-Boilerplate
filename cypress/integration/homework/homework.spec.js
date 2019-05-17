@@ -51,7 +51,10 @@ describe('Starwars API', () => {
 			getANewHope().its('body').its('title').should('eq', 'A New Hope');
 		});
 		it('asserts that Chewbacca is a Wookiee', () => {
-			//Wookie comments
+			//Makes a GET request to verify that Chewbacca exists and then verifies that the
+			//species value matches the expected value. In this case, a Wookiee. It also
+			//verifies that the listed species array in the characters response matches that
+			//of Wookiee by making a GET request to the matching species value.
 			const getChewbacca = () => cy.request(chewbacca);
 			const getWookiee = () => cy.request(wookiee);
 			//*Assertions made with Chai*
@@ -68,7 +71,15 @@ describe('Starwars API', () => {
 			getWookiee().its('body.name').should('eq', 'Wookiee');
 		});
 		it('asserts that the /starships endpoint returns expected fields', () => {
+			//This verifies that a response to a request made to the /starships endpoint contains
+			//specific properties. It makes a GET request to /starships, then compares the response
+			//to the expected values by taking the first starship returned, then verifying that
+			//the response contains the expected properties. This test can certainly be improved
+			//by wrapping the request and being able to loop through the response to look for the
+			//properties expected with only a single API call, but I wanted it to be readable and
+			//more of a step by step process for this case.
 			const getStarships1 = () => cy.request(starshipsPage1);
+			//*Assertions made with Chai*
 			getStarships1().then((response) => {
 				expect(response.body.results).to.be.an('array');
 				expect(response.body.results[0]).to.have.property('name');
@@ -78,6 +89,7 @@ describe('Starwars API', () => {
 				expect(response.body.results[0]).to.have.property('pilots');
 				expect(response.body.results[0]).to.have.property('films');
 			});
+			//*Assertions made with Cypress*
 			getStarships1().its('body.results.0.name').should('exist');
 			getStarships1().its('body.results.0.model').should('exist');
 			getStarships1().its('body.results.0.crew').should('exist');
@@ -89,10 +101,19 @@ describe('Starwars API', () => {
 	//Set the context of the following group of tests
 	context('Negative Tests', () => {
 		it('fails to assert that the Enterprise appears in Starwars', () => {
+			//This test makes a GET request to the /starships endpoint by using the query string
+			//param of "Enterprise". This makes use of the ability to filter responses based on
+			//matching strings. The reason we do this is that there are multiple pages of info
+			//and we didn't want to make a request to each page looking for the Enterprise.
+			//We are also under the assumption that this feature works as expected. After making
+			//this request, we expect that the response should containe a name prop of Enterprise,
+			//which obviously fails.
 			const getEnterprise = () => cy.request(enterpriseSearch);
+			//*Assertions made with Chai*
 			getEnterprise().then((response) => {
 				expect(response.body.results).to.have.property('name', 'Enterprise');
 			});
+			//*Assertions made with Cypress*
 			getEnterprise().its('body.results.0.name').should('eq', 'Enterprise');
 		});
 	});
