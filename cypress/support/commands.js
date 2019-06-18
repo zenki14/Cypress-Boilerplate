@@ -8,6 +8,30 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
+Cypress.Commands.add('caLogin', () => {
+	cy.visit('/scheduler/logout');
+	cy
+		.request({
+			method: 'POST',
+			url: '/client/auth/authorize',
+			body: {
+				grant_type: 'password',
+				password: 'Dassen!985',
+				scope: 'public private',
+				username: 'globaladmin'
+			},
+			headers: {
+				Accept: 'application/json, text/plain, */*',
+				Authorization: 'Basic NmU1ZjNjN2VkMDkxMzc1NDZiNzhhMDlkN2E0NWMyZjE6ZGV2M19zZWNyZXQ='
+			}
+		})
+		.then((response) => {
+			expect(response.body.access_token).to.exist;
+			window.sessionStorage.setItem('scope', response.body.scope);
+			window.sessionStorage.setItem('tokenType', response.body.token_type);
+			window.sessionStorage.setItem('accessToken', response.body.access_token);
+		});
+});
 //
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
