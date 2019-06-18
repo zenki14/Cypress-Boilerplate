@@ -19,7 +19,6 @@ describe('Login spec', () => {
 	});
 	context('API', () => {
 		beforeEach(() => {
-			cy.visit('/scheduler/logout');
 			cy.caLogin();
 			cy.visit('/scheduler/admin/entities');
 		});

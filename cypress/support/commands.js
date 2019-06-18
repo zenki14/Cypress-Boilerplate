@@ -9,6 +9,7 @@
 // ***********************************************
 //
 Cypress.Commands.add('caLogin', () => {
+	cy.visit('/scheduler/logout');
 	cy
 		.request({
 			method: 'POST',
