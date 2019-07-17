@@ -11,7 +11,7 @@
 	"author": "Dane Worsham",
 	"license": "ISC",
 	"devDependencies": {
-		"cypress": "^3.3.1",
+		"cypress": "^3.4.0",
 		"eslint": "^5.16.0",
 		"eslint-plugin-chai-friendly": "^0.4.1",
 		"eslint-plugin-cypress": "^2.2.1"

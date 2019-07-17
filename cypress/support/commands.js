@@ -22,7 +22,7 @@ Cypress.Commands.add('caLogin', () => {
 			},
 			headers: {
 				Accept: 'application/json, text/plain, */*',
-				Authorization: 'Basic NmU1ZjNjN2VkMDkxMzc1NDZiNzhhMDlkN2E0NWMyZjE6ZGV2M19zZWNyZXQ='
+				Authorization: 'Basic bHNfaWQ6bHNfc2VjcmV0'
 			}
 		})
 		.then((response) => {
@@ -30,6 +30,53 @@ Cypress.Commands.add('caLogin', () => {
 			window.sessionStorage.setItem('scope', response.body.scope);
 			window.sessionStorage.setItem('tokenType', response.body.token_type);
 			window.sessionStorage.setItem('accessToken', response.body.access_token);
+		});
+});
+
+Cypress.Commands.add('caSeedArea', () => {
+	const areaName = 'Area ' + Date.now();
+	cy
+		.request({
+			method: 'POST',
+			url: '/api/club/location/area',
+			body: {
+				classification: 'Class ' + Date.now(),
+				entity: {
+					id: 17
+				},
+				name: areaName,
+				rooms: [ { name: 'Res ' + Date.now() } ],
+				schedule: {
+					name: 'Standard Season',
+					startDate: '2019-07-02',
+					endDate: '2099-12-31',
+					workTimes: [
+						{ name: 'sunday', startTime: '06:00:00', endTime: '23:30:00' },
+						{ name: 'monday', startTime: '06:00:00', endTime: '23:30:00' },
+						{ name: 'tuesday', startTime: '06:00:00', endTime: '23:30:00' },
+						{ name: 'wednesday', startTime: '06:00:00', endTime: '23:30:00' },
+						{ name: 'thursday', startTime: '06:00:00', endTime: '23:30:00' },
+						{ name: 'friday', startTime: '06:00:00', endTime: '23:30:00' },
+						{ name: 'saturday', startTime: '06:00:00', endTime: '23:30:00' }
+					]
+				}
+			},
+			headers: {
+				Authorization:
+					'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjTmtPN3ZCa0tsWFdab2FmZDRlMmEzTXoyMXpZNHZsWU9UWWM2NmZBIiwiaWF0IjoxNTYzMzA0MjU1LCJzdWIiOjEsInNjcCI6WyJwdWJsaWMiLCJwcml2YXRlIl19.IXDZ7SSwg4mrbinlCgziUFWapmD0NZs3r-XCmSPflR4',
+				Connection: 'keep-alive',
+				Cookie: 'PHPSESSID=erviummqanof7o62j9rgrkg7vf',
+				DNT: 1,
+				Host: 'u2regression.clubautomation.com',
+				Origin: 'https://u2regression.clubautomation.com',
+				Pragma: 'no-cache',
+				Referer: 'https://u2regression.clubautomation.com/scheduler/admin/areas/new?entityId=17'
+			}
+		})
+		.as('areaPost')
+		.then((response) => {
+			const areaId = response.body.data.id;
+			expect(response.body.data.id).to.eq(areaId);
 		});
 });
 //

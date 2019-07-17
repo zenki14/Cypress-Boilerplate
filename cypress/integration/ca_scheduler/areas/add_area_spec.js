@@ -1,11 +1,11 @@
 describe('Adds an area', () => {
 	beforeEach(() => {
 		cy.caLogin();
-		cy.visit('scheduler/admin/areas/new?entityId=4');
-		cy.url().should('contain', '/new?entityId=4');
+		cy.visit('scheduler/admin/areas/new?entityId=17');
+		cy.url().should('contain', '/new?entityId=17');
 	});
 	it('Verifies page load with expected entity used', () => {
-		cy.get('.selection-text').contains('Globo Gym').should('be.visible');
+		cy.get('.selection-text').contains('Automation_Entity').should('be.visible');
 	});
 	it('Adds required values and submits successfully', () => {
 		cy.server();
