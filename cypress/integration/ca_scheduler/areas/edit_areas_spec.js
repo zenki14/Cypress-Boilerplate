@@ -1,13 +1,13 @@
 describe('Edits an Existing Area', () => {
 	let assertAreaName;
 	let assertAreaId;
-	let putAreaName;
 	beforeEach(() => {
 		cy.caLogin();
 		cy.caSeedArea();
 		cy.server();
 		cy.route('GET', '/api/club/location/area-list?entityIds=17').as('getAreas');
 		cy.route('GET', '/api/club/details').as('getAreaDetails');
+		cy.route('PUT', '/api/club/location/area').as('putArea');
 		cy.visit('/scheduler/admin/entities/17');
 		cy.wait('@getAreas').then((response) => {
 			if (response.status === 200) {
@@ -32,8 +32,7 @@ describe('Edits an Existing Area', () => {
 		cy.visit('/scheduler/admin/areas/' + assertAreaId + '?entityId=17');
 		cy.get('h1').should('contain', assertAreaName);
 	});
-	it.only('edits the Area Name of an existing Area via the UI', () => {
-		cy.route('PUT', '/api/club/location/area').as('putArea');
+	it('edits the Area Name of an existing Area via the UI', () => {
 		cy.visit('/scheduler/admin/areas/' + assertAreaId + '?entityId=17');
 		cy.wait('@getAreaDetails');
 		cy.get('.area-info').should('be.visible');
@@ -49,11 +48,11 @@ describe('Edits an Existing Area', () => {
 		cy.wait('@putArea');
 		cy.get('@putArea').then((xhr) => {
 			cy.log(xhr.requestBody.name);
-			putAreaName = xhr.requestBody.name;
+			cy.wrap(xhr.requestBody.name).as('putAreaName');
 			cy.get('.is-active').contains('Areas').click();
 			cy.wait('@getAreas');
 			cy.get('.tile-content').contains(assertAreaName).should('not.exist');
-			cy.get('.tile-content').contains(putAreaName).should('exist');
+			cy.get('.tile-content').contains(this.putAreaName).should('exist');
 		});
 	});
 });
