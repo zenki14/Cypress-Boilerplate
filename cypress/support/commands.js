@@ -38,7 +38,7 @@ Cypress.Commands.add('caSeedArea', () => {
 	cy
 		.request({
 			method: 'POST',
-			url: '/api/club/location/area',
+			url: '/api/club/location/areas',
 			body: {
 				classification: 'Class ' + Date.now(),
 				entity: {
@@ -63,14 +63,14 @@ Cypress.Commands.add('caSeedArea', () => {
 			},
 			headers: {
 				Authorization:
-					'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjTmtPN3ZCa0tsWFdab2FmZDRlMmEzTXoyMXpZNHZsWU9UWWM2NmZBIiwiaWF0IjoxNTYzMzA0MjU1LCJzdWIiOjEsInNjcCI6WyJwdWJsaWMiLCJwcml2YXRlIl19.IXDZ7SSwg4mrbinlCgziUFWapmD0NZs3r-XCmSPflR4',
+					'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJWQTJHRmtnSWtlRmZianJLa3VNZjl4VEpQTDNBUTRjclZlZmlrM3FnIiwiaWF0IjoxNTY1MTIwMTU3LCJleHAiOjE1NjUyMDY1NTcsInN1YiI6MSwic2NwIjpbInB1YmxpYyIsInByaXZhdGUiXX0.grEzOdkdKPPSf2ZLpIZMLalm_pILFa0Z0u-iQ1qP8Ss',
 				Connection: 'keep-alive',
-				Cookie: 'PHPSESSID=erviummqanof7o62j9rgrkg7vf',
+				Cookie: 'PHPSESSID=8kpc6bagkt1a1t3skmu9kr612n',
 				DNT: 1,
 				Host: 'u2regression.clubautomation.com',
 				Origin: 'https://u2regression.clubautomation.com',
 				Pragma: 'no-cache',
-				Referer: 'https://u2regression.clubautomation.com/scheduler/admin/areas/new?entityId=17'
+				Referer: 'https://u2regression.clubautomation.com/club-settings/areas/new?entityId=17'
 			}
 		})
 		.as('areaPost')

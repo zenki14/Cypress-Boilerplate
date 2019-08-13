@@ -2,7 +2,7 @@ describe('Login spec', () => {
 	context('UI', () => {
 		beforeEach(() => {
 			cy.visit('/scheduler/logout');
-			cy.visit('/scheduler/login');
+			cy.visit('/club-settings/login');
 			cy.url().should('contain', '/login');
 		});
 		it('Checks to verify Login page is visible', () => {
@@ -20,7 +20,7 @@ describe('Login spec', () => {
 	context('API', () => {
 		beforeEach(() => {
 			cy.caLogin();
-			cy.visit('/scheduler/admin/entities');
+			cy.visit('/club-settings/entities');
 		});
 		it('Verifies Login landing page with Auth granted', () => {
 			cy.get('.club-title').contains('Deerfield Athletic Association').should('be.visible');
