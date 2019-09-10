@@ -3,7 +3,6 @@ describe('Edits an Existing Area', () => {
 	let assertAreaId;
 	let putAreaName;
 	beforeEach(() => {
-		cy.caLogin();
 		cy.caSeedArea();
 		cy.server();
 		cy.route('GET', '/api/club/location/areas?entityIds=17').as('getAreas');

@@ -14,7 +14,16 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+beforeEach(function() {
+	cy.caLogin();
+});
+
+afterEach(function() {
+	cy.window().then((win) => {
+		win.sessionStorage.clear();
+	});
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

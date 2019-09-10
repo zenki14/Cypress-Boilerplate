@@ -8,8 +8,8 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
+let bearer;
 Cypress.Commands.add('caLogin', () => {
-	cy.visit('/scheduler/logout');
 	cy
 		.request({
 			method: 'POST',
@@ -27,9 +27,10 @@ Cypress.Commands.add('caLogin', () => {
 		})
 		.then((response) => {
 			expect(response.body.access_token).to.exist;
+			bearer = response.body.access_token;
 			window.sessionStorage.setItem('scope', response.body.scope);
 			window.sessionStorage.setItem('tokenType', response.body.token_type);
-			window.sessionStorage.setItem('accessToken', response.body.access_token);
+			window.sessionStorage.setItem('accessToken', bearer);
 		});
 });
 
@@ -62,8 +63,7 @@ Cypress.Commands.add('caSeedArea', () => {
 				}
 			},
 			headers: {
-				Authorization:
-					'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJWQTJHRmtnSWtlRmZianJLa3VNZjl4VEpQTDNBUTRjclZlZmlrM3FnIiwiaWF0IjoxNTY1MTIwMTU3LCJleHAiOjE1NjUyMDY1NTcsInN1YiI6MSwic2NwIjpbInB1YmxpYyIsInByaXZhdGUiXX0.grEzOdkdKPPSf2ZLpIZMLalm_pILFa0Z0u-iQ1qP8Ss',
+				Authorization: 'Bearer ' + bearer,
 				Connection: 'keep-alive',
 				Cookie: 'PHPSESSID=8kpc6bagkt1a1t3skmu9kr612n',
 				DNT: 1,

@@ -19,7 +19,6 @@ describe('Login spec', () => {
 	});
 	context('API', () => {
 		beforeEach(() => {
-			cy.caLogin();
 			cy.visit('/club-settings/entities');
 		});
 		it('Verifies Login landing page with Auth granted', () => {

@@ -4,7 +4,6 @@ describe('Add category', () => {
 	let entityList;
 	context('UI', () => {
 		beforeEach(() => {
-			cy.caLogin();
 			cy.server();
 			cy.route('GET', '/api/component/components').as('getComponentList');
 			cy.visit('/club-settings/components');
@@ -37,7 +36,6 @@ describe('Add category', () => {
 		});
 		context('dynamic entities', () => {
 			beforeEach(() => {
-				cy.caLogin();
 				cy.server();
 				cy.route('GET', '/api/component/components/' + componentId).as('compDetails');
 				cy.visit('/club-settings/components/' + componentId);

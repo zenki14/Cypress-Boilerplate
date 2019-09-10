@@ -1,6 +1,5 @@
 describe('Adds an area', () => {
 	beforeEach(() => {
-		cy.caLogin();
 		cy.visit('club-settings/areas/new?entityId=17');
 		cy.url().should('contain', '/new?entityId=17');
 	});
