@@ -1,6 +1,6 @@
 {
 	"name": "cypress_boilerplate",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Cypress Boilerplate",
 	"main": "index.js",
 	"scripts": {
@@ -11,9 +11,9 @@
 	"author": "Dane Worsham",
 	"license": "ISC",
 	"devDependencies": {
-		"cypress": "^3.3.1",
-		"eslint": "^5.16.0",
-		"eslint-plugin-chai-friendly": "^0.4.1",
-		"eslint-plugin-cypress": "^2.2.1"
+		"cypress": "^4.1.0",
+		"eslint": "^6.8.0",
+		"eslint-plugin-chai-friendly": "^0.5.0",
+		"eslint-plugin-cypress": "^2.10.3"
 	}
 }
